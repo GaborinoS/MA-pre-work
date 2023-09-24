@@ -1,0 +1,2 @@
+Epoch [1/1] Training Loss: 0.1599, Validation Loss: 0.0196
+Validation Loss improved at Epoch 1.
