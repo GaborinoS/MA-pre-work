@@ -125,10 +125,11 @@ class AudioDataset(data.Dataset):
         log_s_neg_aug1 = self.spec_transforms(log_s_neg1)
 
 
-
-
         #creating 3 channels by copying log_s1 3 times 
-        #spec = torch.cat((log_s, log_s, log_s), dim=0)
+        #log_s_pos_aug1 = torch.cat((log_s_pos_aug1, log_s_pos_aug1, log_s_pos_aug1), dim=0)
+        #log_s_pos_aug2 = torch.cat((log_s_pos_aug2, log_s_pos_aug2, log_s_pos_aug2), dim=0)
+        #log_s_neg_aug1 = torch.cat((log_s_neg_aug1, log_s_neg_aug1, log_s_neg_aug1), dim=0)
+
         
         return log_s_pos_aug1, log_s_pos_aug2 , log_s_neg_aug1
 
@@ -146,3 +147,5 @@ def create_generators():
 
 
 print('US8k dataset is ready to be used!')
+
+

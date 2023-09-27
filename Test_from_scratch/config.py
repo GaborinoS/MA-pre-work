@@ -42,8 +42,8 @@ time_masks = 1
 freq_masks_width = 32
 time_masks_width = 32
 
-epochs = 1
-finetune_epochs = 1
+epochs = 300
+finetune_epochs = 400
 batch_size = 32
 warm_epochs = 10
 gamma = 0.98
