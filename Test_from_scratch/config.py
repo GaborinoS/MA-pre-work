@@ -39,12 +39,12 @@ alpha = 0.5
 
 freq_masks = 2
 time_masks = 1
-freq_masks_width = 32
-time_masks_width = 32
+freq_masks_width = 16
+time_masks_width = 16
 
 epochs = 300
 finetune_epochs = 400
-batch_size = 32
+batch_size = 64
 warm_epochs = 10
 gamma = 0.98
 

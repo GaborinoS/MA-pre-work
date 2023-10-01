@@ -45,3 +45,5 @@ Epoch [34/300] Training Loss: 0.0108, Validation Loss: 0.0060
 Epoch [35/300] Training Loss: 0.0082, Validation Loss: 0.0046
 Epoch [36/300] Training Loss: 0.0075, Validation Loss: 0.0073
 Epoch [37/300] Training Loss: 0.0098, Validation Loss: 0.0058
+Epoch [38/300] Training Loss: 0.0083, Validation Loss: 0.0062
+Epoch [39/300] Training Loss: 0.0091, Validation Loss: 0.0060
