@@ -1,7 +1,7 @@
 ESC_10 = False
 ESC_50 = False	
-US8K = True
-
+US8K = False
+ADSMI = True
 
 path_to_ESC50 = './data/ESC50'
 path_to_ESC10 = './data/ESC10'
@@ -33,6 +33,12 @@ else:
 if US8K:
 	us8k_train_folds = [1, 2, 3, 4, 5, 6, 7, 8]
 	us8k_test_fold = [9]
+
+if ADSMI:
+	ADSMI_train_folds = [1, 2, 3, 4, 5, 6, 7]
+	ADSMI_test_fold = [8]
+	test_fold = [1]
+	train_folds = list(i for i in range(1, 9) if i != test_fold[0])
 
 temperature = 0.05
 alpha = 0.5
