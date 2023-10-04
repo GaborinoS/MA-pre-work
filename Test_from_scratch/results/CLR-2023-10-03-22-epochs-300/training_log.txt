@@ -1,0 +1,19 @@
+Epoch [1/300] Training Loss: 0.3758, Validation Loss: 0.2811
+Validation Loss improved at Epoch 1.
+Epoch [2/300] Training Loss: 0.2471, Validation Loss: 0.2237
+Validation Loss improved at Epoch 2.
+Epoch [3/300] Training Loss: 0.1829, Validation Loss: 0.1935
+Validation Loss improved at Epoch 3.
+Epoch [4/300] Training Loss: 0.1431, Validation Loss: 0.1366
+Validation Loss improved at Epoch 4.
+Epoch [5/300] Training Loss: 0.1347, Validation Loss: 0.1588
+Epoch [6/300] Training Loss: 0.1176, Validation Loss: 0.1462
+Epoch [7/300] Training Loss: 0.1087, Validation Loss: 0.1320
+Validation Loss improved at Epoch 7.
+Epoch [8/300] Training Loss: 0.1171, Validation Loss: 0.1170
+Validation Loss improved at Epoch 8.
+Epoch [9/300] Training Loss: 0.1089, Validation Loss: 0.1115
+Validation Loss improved at Epoch 9.
+Epoch [10/300] Training Loss: 0.1085, Validation Loss: 0.1077
+Validation Loss improved at Epoch 10.
+Epoch [11/300] Training Loss: 0.1002, Validation Loss: 0.1133
