@@ -2,3 +2,6 @@
 Test_from_scratch/data/ 
 Test_from_scratch/results/CLR-2023-09-28-19-epochs-300
 Test_from_scratch.zip
+Test_from_scratch/results/ 
+Test_from_scratch/results_standalone/
+Test_from_scratch/finetune_results/  
