@@ -1,7 +1,7 @@
 ESC_10 = False
-ESC_50 = True	
+ESC_50 = False	
 US8K = False
-ADSMI = False
+ADSMI = True
 
 path_to_ESC50 = './data/ESC50'
 path_to_ESC10 = './data/ESC10'
