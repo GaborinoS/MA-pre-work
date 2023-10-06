@@ -95,7 +95,10 @@ class MyDataset_finetune(data.Dataset):
         
         
         #creating 3 channels by copying log_s1 3 times 
-        spec = log_s#torch.cat((log_s, log_s, log_s), dim=0)
+        if config.channels == 3:
+            spec = torch.cat((log_s, log_s, log_s), dim=0)
+        else:
+            spec = log_s
         
         return file_name, spec, class_id
         

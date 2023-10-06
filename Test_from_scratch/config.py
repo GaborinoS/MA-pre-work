@@ -1,7 +1,7 @@
 ESC_10 = False
-ESC_50 = False	
+ESC_50 = True	
 US8K = False
-ADSMI = True
+ADSMI = False
 
 path_to_ESC50 = './data/ESC50'
 path_to_ESC10 = './data/ESC10'
@@ -39,6 +39,8 @@ if ADSMI:
 	ADSMI_test_fold = [8]
 	test_fold = [1]
 	train_folds = list(i for i in range(1, 9) if i != test_fold[0])
+	lr = 1e-4
+	class_numbers = 4
 
 temperature = 0.05
 alpha = 0.5
@@ -50,7 +52,10 @@ time_masks_width = 16
 
 epochs = 300
 finetune_epochs = 400
+patience = 120
 batch_size = 64
 warm_epochs = 10
 gamma = 0.98
 
+#Resnet parameters
+channels = 3

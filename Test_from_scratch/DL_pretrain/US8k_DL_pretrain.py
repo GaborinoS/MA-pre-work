@@ -124,11 +124,11 @@ class AudioDataset(data.Dataset):
         log_s_neg1 = librosa.power_to_db(s_neg1, ref=np.max)
         log_s_neg_aug1 = self.spec_transforms(log_s_neg1)
 
-
+        if config.channels == 3:
         #creating 3 channels by copying log_s1 3 times 
-        #log_s_pos_aug1 = torch.cat((log_s_pos_aug1, log_s_pos_aug1, log_s_pos_aug1), dim=0)
-        #log_s_pos_aug2 = torch.cat((log_s_pos_aug2, log_s_pos_aug2, log_s_pos_aug2), dim=0)
-        #log_s_neg_aug1 = torch.cat((log_s_neg_aug1, log_s_neg_aug1, log_s_neg_aug1), dim=0)
+            log_s_pos_aug1 = torch.cat((log_s_pos_aug1, log_s_pos_aug1, log_s_pos_aug1), dim=0)
+            log_s_pos_aug2 = torch.cat((log_s_pos_aug2, log_s_pos_aug2, log_s_pos_aug2), dim=0)
+            log_s_neg_aug1 = torch.cat((log_s_neg_aug1, log_s_neg_aug1, log_s_neg_aug1), dim=0)
 
         
         return log_s_pos_aug1, log_s_pos_aug2 , log_s_neg_aug1

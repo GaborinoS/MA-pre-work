@@ -125,15 +125,18 @@ class AudioDataset(data.Dataset):
 
 
         
-    # masking the spectrograms
+        # masking the spectrograms
         log_s_po_aug1 = self.spec_transforms(log_s_pos1)
         log_s_po_aug2 = self.spec_transforms(log_s_pos2)
-
         log_s_neg_aug1 = self.spec_transforms(log_s_neg)
         
-        #print(f"log_s_po_aug1 shape: {log_s_po_aug1.shape}")
-        #print(f"log_s_po_aug2 shape: {log_s_po_aug2.shape}")
-        #print(f"log_s_neg_aug1 shape: {log_s_neg_aug1.shape}")
+        #print(config.channels)
+
+        if config.channels == 3:
+            #creating 3 channels by copying log_s1 3 times 
+            log_s_po_aug1 = torch.cat((log_s_po_aug1, log_s_po_aug1, log_s_po_aug1), dim=0)
+            log_s_po_aug2 = torch.cat((log_s_po_aug2, log_s_po_aug2, log_s_po_aug2), dim=0)
+            log_s_neg_aug1 = torch.cat((log_s_neg_aug1, log_s_neg_aug1, log_s_neg_aug1), dim=0)
         
         return log_s_po_aug1, log_s_po_aug2 , log_s_neg_aug1
 
