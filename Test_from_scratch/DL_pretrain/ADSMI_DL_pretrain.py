@@ -17,7 +17,9 @@ import librosa
 
 import config
 
+
 root = './data/labeled_ADSMI/labeled_data_2013-535/'
+#root = 'E:/ADSIM/Import-2023-04/data/2015-606/Heiligenstadt_2015_01_Data'
 filenames = os.listdir(root)
 
 n = len(filenames)
@@ -42,6 +44,7 @@ class AudioDataset(data.Dataset):
     
     def __init__(self, train=True):
         self.root = './data/labeled_ADSMI/labeled_data_2013-535/'
+        #self.root = 'E:/ADSIM/Import-2023-04/data/2015-606/Heiligenstadt_2015_01_Data/'
         self.train = train
         self.filenames = os.listdir(self.root)
 
