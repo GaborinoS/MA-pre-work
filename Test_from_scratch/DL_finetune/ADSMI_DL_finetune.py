@@ -30,14 +30,14 @@ class MyDataset_finetune(data.Dataset):
         temp.sort()
         self.file_names = []
         self.class_ids = []
-        if train:
+        if self.train:
             for i in range(len(labels_file["Label_int"])):
-                if int(labels_file["fold"][i]) in config.train_folds:
+                if int(labels_file["fold"][i]) in config.ADSMI_train_folds:
                     self.file_names.append(labels_file["filename"][i])
                     self.class_ids.append(labels_file["Label_int"][i])
         else:
             for i in range(len(labels_file["Label_int"])):
-                if int(labels_file["fold"][i]) in config.test_fold:
+                if int(labels_file["fold"][i]) in config.ADSMI_test_fold:
                     self.file_names.append(labels_file["filename"][i])
                     self.class_ids.append(labels_file["Label_int"][i])
       

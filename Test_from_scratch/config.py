@@ -37,8 +37,6 @@ if US8K:
 if ADSMI:
 	ADSMI_train_folds = [1, 2, 3, 4, 5, 6, 7]
 	ADSMI_test_fold = [8]
-	test_fold = [1]
-	train_folds = list(i for i in range(1, 9) if i != test_fold[0])
 	lr = 1e-4
 	class_numbers = 4
 
