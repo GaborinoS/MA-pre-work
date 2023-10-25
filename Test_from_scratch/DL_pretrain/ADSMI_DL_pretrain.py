@@ -22,6 +22,7 @@ root = './data/labeled_ADSMI/labeled_data_2013-535/'
 #root = 'E:/ADSIM/Import-2023-04/data/2015-606/Heiligenstadt_2015_01_Data'
 filenames = os.listdir(root)
 
+
 n = len(filenames)
 f = len(config.ADSMI_train_folds) # replace with your desired value of f
 
@@ -37,6 +38,9 @@ for i in range(1, f + 1):
 for i in range(1, r + 1):
     FOLDS.append(i)
 
+random.shuffle(FOLDS)
+random.shuffle(FOLDS)
+random.shuffle(FOLDS)
 
 
 ######ESC50 DATASET########
@@ -56,12 +60,12 @@ class AudioDataset(data.Dataset):
 
         if train:
             for i in range(len(FOLDS)):
-                if int(FOLDS[i]) in config.train_folds:
+                if int(FOLDS[i]) in config.ADSMI_train_folds:
                     self.file_names.append(self.filenames[i])
 
         else:
             for i in range(len(FOLDS)):
-                if int(FOLDS[i]) in config.test_fold:
+                if int(FOLDS[i]) in config.ADSMI_test_fold:
                     self.file_names.append(self.filenames[i])
  
             

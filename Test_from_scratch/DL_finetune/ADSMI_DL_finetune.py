@@ -69,7 +69,7 @@ class MyDataset_finetune(data.Dataset):
     def __getitem__(self, index):
         file_name = self.file_names[index ]  
         path = self.root + file_name
-        wave, rate = librosa.load(path, sr=44100)
+        wave, rate = librosa.load(path, sr=44100) 
         
         #identifying the label of the sample from its name
         class_id = int(self.class_ids[index])
@@ -82,9 +82,16 @@ class MyDataset_finetune(data.Dataset):
             wave = transforms.scale(wave, wave.min(), wave.max(), -1.0, 1.0)
         wave = wave.T * 32768.0
         
-        # Remove silent sections
-        start = wave.nonzero()[1].min()
-        end = wave.nonzero()[1].max()
+        nonzero_rows, nonzero_cols = wave.nonzero()
+
+        if nonzero_rows.size > 0:
+            start = nonzero_cols.min()
+            end = nonzero_cols.max()
+            wave = wave[:, start: end + 1]
+        else:
+            # Create a default or zero tensor of appropriate shape for empty waveforms
+            default_spec_shape = (config.channels, default_freq_dim, default_time_dim)  # You have to define default_freq_dim and default_time_dim based on what's appropriate for your application
+            return file_name, torch.zeros(default_spec_shape), class_id
         wave = wave[:, start: end + 1]  
         
         wave_copy = np.copy(wave)

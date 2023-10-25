@@ -57,3 +57,5 @@ gamma = 0.98
 
 #Resnet parameters
 channels = 3
+#pipeline
+desired_length_in_seconds = 10
