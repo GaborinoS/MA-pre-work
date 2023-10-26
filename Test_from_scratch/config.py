@@ -58,4 +58,7 @@ gamma = 0.98
 #Resnet parameters
 channels = 3
 #pipeline
-desired_length_in_seconds = 10
+desired_length_in_seconds = 12
+val_sound_length = 15
+goal_sr_labeled = 32000
+goal_sr_unlabeled = 50000
