@@ -18,10 +18,10 @@ class MyPipeline(torch.nn.Module):
         self,
         input_sample_rate,
         device,
-        n_fft=1024,
+        n_fft=2048,
         hop_length = 512,
         n_mels=128,  
-        win_length = 1024,
+        win_length = 2048,
         desired_length_in_seconds=5,
         train=True,
     ):
