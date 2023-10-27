@@ -51,7 +51,7 @@ time_masks_width = 16
 epochs = 300
 finetune_epochs = 400
 patience = 120
-batch_size = 64
+batch_size = 32
 warm_epochs = 10
 gamma = 0.98
 
