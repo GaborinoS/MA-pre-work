@@ -1,21 +1,11 @@
 import torch
 import torch.nn.functional as F
-import torch.optim as optim
 import torchaudio.transforms as T
-import torchvision.models as models
 import torchaudio
 import os
 from torch.utils.data import Dataset, DataLoader
-import random
 import pandas as pd
-import torch.nn as nn
-from tqdm import tqdm
-import torch.optim.lr_scheduler as lr_scheduler
-# Implement Stratified K-Folds Cross-validation
-from sklearn.model_selection import StratifiedKFold
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import numpy as np
+
 
 #own modules
 from Pipelines.Pipeline_FT_SA import MyPipeline
@@ -36,7 +26,7 @@ class MyDataset_finetune_train(Dataset):
         self.file_names = []
         self.class_ids = []
         self.train = train
-        self.sample_rate = sample_rate
+        self.sample_rate = config.goal_sr_labeled
         
         
         if self.train:
@@ -80,7 +70,7 @@ class MyDataset_finetune_val(Dataset):
         temp.sort()
         self.file_names = []
         self.class_ids = []
-        self.sample_rate = sample_rate
+        self.sample_rate = config.goal_sr_labeled
         
         
         self.file_names = val_df["filename"].values
