@@ -113,7 +113,7 @@ class MyDataset_finetune_val(Dataset):
 
 
 def create_generators_finetune_train(train_df,test_df):
-    train_dataset = MyDataset_finetune_train(train_df,test_df, sample_rate=config.goal_sr_labeled, desired_length_in_seconds=config.desired_length_in_seconds)
+    train_dataset = MyDataset_finetune_train(train_df,test_df,sample_rate=config.goal_sr_labeled, desired_length_in_seconds=config.desired_length_in_seconds)
     train_loader = DataLoader(train_dataset, batch_size = config.batch_size, shuffle=True, num_workers=0 ,drop_last=False)
 
     test_dataset = MyDataset_finetune_train(train_df,test_df,train=False, desired_length_in_seconds=config.desired_length_in_seconds)
@@ -121,7 +121,7 @@ def create_generators_finetune_train(train_df,test_df):
     
     return train_loader, test_loader
 
-def create_generators_finetune_val(val_df,val_length_sev=config.val_sound_length):
+def create_generators_finetune_val(val_df):
     val_dataset = MyDataset_finetune_val(val_df=val_df, sample_rate=config.goal_sr_labeled,desired_length_in_seconds=config.val_sound_length)
     val_loader = DataLoader(val_dataset, batch_size = config.batch_size, shuffle=True, num_workers=0 ,drop_last=False)
     

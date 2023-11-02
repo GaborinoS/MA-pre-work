@@ -50,9 +50,9 @@ class MyPipeline(torch.nn.Module):
         self.volume_perturbation = T.Vol(0.9).to(self.device)  # Decrease volume by 10%
 
         self.spec_aug = torch.nn.Sequential( 
-            T.FrequencyMasking(freq_mask_param=20).to(self.device),
-            T.TimeMasking(time_mask_param=90).to(self.device),
-            T.TimeStretch( random.uniform(0.95,1.05),fixed_rate=True).to(self.device)
+            T.FrequencyMasking(freq_mask_param=8).to(self.device),#10
+            T.TimeMasking(time_mask_param=70).to(self.device),#90
+            #T.TimeStretch( random.uniform(0.95,1.05),fixed_rate=True).to(self.device)
         )
 
     #@staticmethod
@@ -100,20 +100,20 @@ class MyPipeline(torch.nn.Module):
     
         
         #t=0
-        if self.train:
+        #if self.train:
             '''
             if random.random() < 1:
                 ps = T.PitchShift(sample_rate=sr,n_steps=0.1).to(self.device)
                 waveform = ps(waveform)
             '''
             # Additive white noise
-            if random.random() < 0.5:
-                noise = torch.randn_like(waveform) * random.uniform(0.001, 0.004)
-                waveform = waveform + self.additive_noise(noise)
+            #if random.random() < 0.5:
+                #noise = torch.randn_like(waveform) * random.uniform(0.001, 0.004)
+                #waveform = waveform + self.additive_noise(noise)
 
             # Volume perturbation
-            if random.random() < 0.5:
-                waveform = self.volume_perturbation(waveform)
+            #if random.random() < 0.5:
+                #waveform = self.volume_perturbation(waveform)
             '''
             #Time stretch without changing pitch
             if random.random() < 0.5 and t!=1:
@@ -123,6 +123,8 @@ class MyPipeline(torch.nn.Module):
                 ).to(self.device)
                 waveform = resampler(waveform)
             '''
+
+        
         # Convert to power spectrogram
         spec = self.mel_spectrogram(waveform)
         
@@ -132,7 +134,7 @@ class MyPipeline(torch.nn.Module):
 
         # Convert to decibel
         spec = self.amplitude(spec).squeeze(0)
-        spec = spec - spec.max()
+        #spec = spec - spec.max()
         #spec = self.fix_spectrogram_length(spec, target_length=624)
 
         if config.channels == 3:
