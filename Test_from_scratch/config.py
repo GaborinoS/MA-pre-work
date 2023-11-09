@@ -59,6 +59,6 @@ gamma = 0.98
 channels = 3
 #pipeline
 desired_length_in_seconds = 7
-val_sound_length = 15
+val_sound_length = 7
 goal_sr_labeled = 32000
 goal_sr_unlabeled = 32000

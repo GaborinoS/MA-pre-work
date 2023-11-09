@@ -88,7 +88,7 @@ class MyDataset_finetune_val(Dataset):
     def __getitem__(self, index):
         file_name = self.file_names[index]  
         path = self.root + file_name
-        
+        print(path)
         # Using torchaudio to load waveform
         waveform, sample_rate_new = torchaudio.load(path)
         waveform = waveform.to(device=torch.device("cuda"), dtype=torch.float32)

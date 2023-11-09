@@ -157,46 +157,72 @@ class MyPipelinePreTrain(torch.nn.Module):
         self.volume_perturbation = T.Vol(0.9).to(self.device)  # Decrease volume by 10%
 
         self.spec_aug = torch.nn.Sequential( 
-            T.FrequencyMasking(freq_mask_param=10).to(self.device),#10
+            T.FrequencyMasking(freq_mask_param=25).to(self.device),#10
             T.TimeMasking(time_mask_param=90).to(self.device),#90
             #T.TimeStretch( random.uniform(0.95,1.05),fixed_rate=True).to(self.device)
         )
 
     #@staticmethod
+    '''
     def random_crop_or_pad(self, waveform: torch.Tensor, sample_rate, desired_length_in_seconds=5) -> torch.Tensor:
-            """
-            Randomly crops the waveform to the desired length in seconds.
-            If the waveform is shorter than the desired length, it will be padded with zeros.
-            """
-            desired_length = desired_length_in_seconds * sample_rate
-            current_length = waveform.shape[1]
+        """
+        Randomly crops the waveform to the desired length in seconds.
+        If the waveform is shorter than the desired length, it will be padded with zeros.
+        """
+        desired_length = desired_length_in_seconds * sample_rate
+        current_length = waveform.shape[1]
+        padding_needed = desired_length - current_length
 
-            # If the waveform is shorter than desired, pad it with zeros
-            side = random.randint(0,2)
+        # Pad waveform if it's shorter than desired
+        if padding_needed > 0:
+            # Randomly choose side to pad (0 for left, 1 for right)
+            side = random.randint(0, 1)
+            # Calculate padding for each side
+            left_pad = padding_needed // 2 if side == 0 else padding_needed
+            right_pad = padding_needed - left_pad
+            waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
+        # Crop waveform if it's longer than desired
+        elif current_length > desired_length:
+            start_idx = random.randint(0, current_length - desired_length)
+            waveform = waveform[:, start_idx:start_idx + desired_length]
 
-            if current_length < desired_length:
-                if side == 0:
-                    padding_needed = desired_length - current_length
-                    left_pad = padding_needed // 2
-                    right_pad = padding_needed - left_pad
-                    waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-                elif side == 1:
-                    padding_needed = desired_length - current_length
-                    left_pad = padding_needed
-                    right_pad = 0
-                    waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-                else:
-                    padding_needed = desired_length - current_length
-                    left_pad = 0
-                    right_pad = padding_needed
-                    waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-            
-            # Calculate the starting point for cropping
-            start_idx = random.randint(0, waveform.shape[1] - desired_length)
-            return waveform[:, start_idx:start_idx+desired_length]
+        return waveform
+        '''
+    def random_crop_or_pad(self, waveform: torch.Tensor, sample_rate, desired_length_in_seconds=5) -> torch.Tensor:
+        """
+        Randomly crops the waveform to the desired length in seconds.
+        If the waveform is shorter than the desired length, it will be padded with zeros.
+        """
+        desired_length = desired_length_in_seconds * sample_rate
+        current_length = waveform.shape[1]
 
+        # If the waveform is shorter than desired, pad it with zeros
+        side = random.randint(0,2)
+
+        if current_length < desired_length:
+            if side == 0:
+                padding_needed = desired_length - current_length
+                left_pad = padding_needed // 2
+                right_pad = padding_needed - left_pad
+                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
+            elif side == 1:
+                padding_needed = desired_length - current_length
+                left_pad = padding_needed
+                right_pad = 0
+                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
+            else:
+                padding_needed = desired_length - current_length
+                left_pad = 0
+                right_pad = padding_needed
+                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
+        
+        # Calculate the starting point for cropping
+        start_idx = random.randint(0, waveform.shape[1] - desired_length)
+        return waveform[:, start_idx:start_idx+desired_length]
+    
     def forward(self,sr, waveform: torch.Tensor,goal_r=50000) -> torch.Tensor:
         
+
         waveform = waveform.to(self.device)
         waveform = self.random_crop_or_pad(waveform, sr, self.desired_length_in_seconds)
         # Apply pitch shift
@@ -248,4 +274,4 @@ class MyPipelinePreTrain(torch.nn.Module):
         
 
         return spec
-    
+
