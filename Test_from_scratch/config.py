@@ -48,17 +48,17 @@ time_masks = 1
 freq_masks_width = 16
 time_masks_width = 16
 
-epochs = 300
-finetune_epochs = 400
-patience = 120
-batch_size = 32
+epochs = 120
+finetune_epochs = 120
+patience = 40
+batch_size = 64
 warm_epochs = 10
 gamma = 0.98
 
 #Resnet parameters
 channels = 3
 #pipeline
-desired_length_in_seconds = 7
-val_sound_length = 7
+desired_length_in_seconds = 16
+val_sound_length = 20
 goal_sr_labeled = 32000
 goal_sr_unlabeled = 32000

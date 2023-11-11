@@ -53,7 +53,7 @@ class MyDataset_finetune_train(Dataset):
         waveform, sample_rate_new = torchaudio.load(path)
         waveform = waveform.to(device=torch.device("cuda"), dtype=torch.float32)
 
-        mel_spec = self.pipeline(sample_rate_new,waveform, goal_r=self.sample_rate)
+        mel_spec = self.pipeline(sample_rate_new, config.desired_length_in_seconds,waveform, goal_r=self.sample_rate)
 
         class_id = self.class_ids[index]
 
@@ -88,12 +88,14 @@ class MyDataset_finetune_val(Dataset):
     def __getitem__(self, index):
         file_name = self.file_names[index]  
         path = self.root + file_name
-        print(path)
+
         # Using torchaudio to load waveform
         waveform, sample_rate_new = torchaudio.load(path)
         waveform = waveform.to(device=torch.device("cuda"), dtype=torch.float32)
+        length_in_sec = int(waveform.shape[1]/sample_rate_new)
 
-        mel_spec = self.pipeline(sample_rate_new,waveform,goal_r=self.sample_rate)
+
+        mel_spec = self.pipeline(sample_rate_new, length_in_sec,waveform,goal_r=self.sample_rate)
 
         class_id = self.class_ids[index]
 
@@ -112,7 +114,7 @@ def create_generators_finetune_train(train_df,test_df):
     return train_loader, test_loader
 
 def create_generators_finetune_val(val_df):
-    val_dataset = MyDataset_finetune_val(val_df=val_df, sample_rate=config.goal_sr_labeled,desired_length_in_seconds=config.val_sound_length)
-    val_loader = DataLoader(val_dataset, batch_size = config.batch_size, shuffle=True, num_workers=0 ,drop_last=False)
+    val_dataset = MyDataset_finetune_val(val_df=val_df ,sample_rate=config.goal_sr_labeled,desired_length_in_seconds=config.val_sound_length)
+    val_loader = DataLoader(val_dataset, batch_size = 1, shuffle=True, num_workers=0 ,drop_last=False)
     
     return val_loader
