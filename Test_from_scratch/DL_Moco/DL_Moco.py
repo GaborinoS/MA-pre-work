@@ -10,7 +10,6 @@ import numpy as np
 
 #own modules
 from Pipelines.Pipeline_FT_SA import MyPipelinePreTrain
-from Pipelines.Pipeline_FT_SA import MyPipelinePreTrain_2
 import config
 
 
@@ -18,7 +17,6 @@ root = 'G:/Dokumente/MAData/Unlabeled_all/'
 #root = './data/unlabeled_test/'
 #root = 'G:/Dokumente/MAData/Unlabeled_klein/'
 #root = './data/ESC50/ESC-50-master/audio/'
-
 filenames = os.listdir(root)
 
 
@@ -65,13 +63,9 @@ class MyDataset_pretrain(Dataset):
             self.file_names = [x for x,y in data_names[:,:] if y in config.ADSMI_test_fold]
 
         print('Number of files: ', len(self.file_names))
-        print(self.file_names[0])
-        print("Fullpath:",self.root + self.file_names[0])
 
         self.pipeline = MyPipelinePreTrain(input_sample_rate=config.goal_sr_labeled, device="cuda", desired_length_in_seconds=desired_length_in_seconds, train=self.train)
         self.pipeline.to(device=torch.device("cuda"), dtype=torch.float32)    
-        self.pipeline2 = MyPipelinePreTrain_2(input_sample_rate=config.goal_sr_labeled, device="cuda", desired_length_in_seconds=desired_length_in_seconds, train=self.train)
-        self.pipeline2.to(device=torch.device("cuda"), dtype=torch.float32)
     
     def __len__(self):
         return len(self.file_names)
@@ -82,25 +76,17 @@ class MyDataset_pretrain(Dataset):
         file_name_pos = self.file_names[index]  
         path = self.root + file_name_pos
 
-        #file name for negative example
-        file_name_neg = random.choice(self.file_names)
-        while file_name_neg == file_name_pos:
-            file_name_neg = random.choice(self.file_names)
-        path_neg = self.root + file_name_neg
 
         # Using torchaudio to load waveform
         waveform_pos, sample_rate_new_pos = torchaudio.load(path)
         waveform_pos = waveform_pos.to(device=torch.device("cuda"), dtype=torch.float32)
 
-        waveform_neg, sample_rate_new_neg = torchaudio.load(path_neg)
-        waveform_neg = waveform_neg.to(device=torch.device("cuda"), dtype=torch.float32)
 
-
-        mel_spec_anch,mel_spec_pos = self.pipeline2(sample_rate_new_pos,waveform_pos,goal_r=self.sample_rate)
+        mel_spec_aug1 = self.pipeline(sample_rate_new_pos,waveform_pos,goal_r=self.sample_rate)
+        mel_spec_aug2 = self.pipeline(sample_rate_new_pos,waveform_pos,goal_r=self.sample_rate)
         
-        mel_spec_neg = self.pipeline(sample_rate_new_neg,waveform_neg,goal_r=self.sample_rate)
-        
-        return mel_spec_anch, mel_spec_pos, mel_spec_neg
+        #print(mel_spec_aug1.size())
+        return mel_spec_aug1, mel_spec_aug2
 
 
 

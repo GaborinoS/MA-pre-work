@@ -3,12 +3,6 @@ ESC_50 = False
 US8K = False
 ADSMI = True
 
-path_to_ESC50 = './data/ESC50'
-path_to_ESC10 = './data/ESC10'
-path_to_US8K = './data/US8K'
-
-path_to_classifierModel = './data/results/2020-12-22-10-42/'
-
 
 ESC10_classIds = [0, 1, 10, 11, 12, 20, 21, 38, 40, 41]
 
@@ -40,25 +34,23 @@ if ADSMI:
 	lr = 1e-4
 	class_numbers = 4
 
-temperature = 0.05
-alpha = 0.5
-
-freq_masks = 2
-time_masks = 1
-freq_masks_width = 16
-time_masks_width = 16
+temperature = 0.07
+freq_mask_param = 15 #7#10
+time_mask_param = 50 #50#90
 
 epochs = 120
 finetune_epochs = 120
-patience = 40
-batch_size = 64
-warm_epochs = 10
-gamma = 0.98
+patience = 20
+batch_size = 256
+
+
 
 #Resnet parameters
 channels = 3
 #pipeline
-desired_length_in_seconds = 16
+desired_length_in_seconds = 6
+
+max_sec_shift = 0.6
 val_sound_length = 20
 goal_sr_labeled = 32000
 goal_sr_unlabeled = 32000
