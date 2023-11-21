@@ -63,10 +63,11 @@ class MyDataset_pretrain(Dataset):
             self.file_names = [x for x,y in data_names[:,:] if y in config.ADSMI_test_fold]
 
         print('Number of files: ', len(self.file_names))
-        print(self.file_names[0])
-        print("Fullpath:",self.root + self.file_names[0])
 
-        self.pipeline = MyPipelinePreTrain_auto(input_sample_rate=config.goal_sr_labeled, device="cuda", desired_length_in_seconds=desired_length_in_seconds, train=self.train)
+        true_value = self.train or config.val_masked
+        print("True Value: ", true_value)
+        
+        self.pipeline = MyPipelinePreTrain_auto(input_sample_rate=config.goal_sr_labeled, device="cuda", desired_length_in_seconds=desired_length_in_seconds, train=true_value)
         self.pipeline.to(device=torch.device("cuda"), dtype=torch.float32)    
 
     

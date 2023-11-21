@@ -29,14 +29,14 @@ if US8K:
 	us8k_test_fold = [9]
 
 if ADSMI:
-	ADSMI_train_folds = [1, 2, 3, 4, 5, 6, 7]
-	ADSMI_test_fold = [8]
+	ADSMI_train_folds = [1, 2, 3, 4, 5, 6, 7,8,9]
+	ADSMI_test_fold = [10]
 	lr = 1e-4
 	class_numbers = 4
 
 temperature = 0.07
-freq_mask_param = 15 #7#10
-time_mask_param = 50 #50#90
+freq_mask_param = 40 #7#10
+time_mask_param = 100 #50#90
 
 epochs = 120
 finetune_epochs = 120
@@ -48,9 +48,12 @@ batch_size = 256
 #Resnet parameters
 channels = 3
 #pipeline
-desired_length_in_seconds = 6
+desired_length_in_seconds = 8
 
 max_sec_shift = 0.6
 val_sound_length = 20
 goal_sr_labeled = 32000
 goal_sr_unlabeled = 32000
+
+#Autoencoder
+val_masked = True
