@@ -35,22 +35,22 @@ if ADSMI:
 	class_numbers = 4
 
 temperature = 0.07
-freq_mask_param = 40 #7#10
-time_mask_param = 100 #50#90
+freq_mask_param = 7 #7#10 #Auto=40
+time_mask_param = 50 #50#90 #Auto = 100
 
-epochs = 120
+epochs = 200
 finetune_epochs = 120
-patience = 20
-batch_size = 256
+patience = 15
+batch_size = 32
 
 
 
 #Resnet parameters
 channels = 3
 #pipeline
-desired_length_in_seconds = 8
+desired_length_in_seconds = 15
 
-max_sec_shift = 0.6
+max_sec_shift = 0.7
 val_sound_length = 20
 goal_sr_labeled = 32000
 goal_sr_unlabeled = 32000

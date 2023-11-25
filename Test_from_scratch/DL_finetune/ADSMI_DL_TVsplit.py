@@ -54,7 +54,13 @@ class MyDataset_finetune_train(Dataset):
         waveform, sample_rate_new = torchaudio.load(path)
         waveform = waveform.to(device=torch.device("cuda"), dtype=torch.float32)
 
-        mel_spec = self.pipeline(sample_rate_new, config.desired_length_in_seconds,waveform, goal_r=self.sample_rate)
+        if self.train == True:
+            length_in_sec = config.desired_length_in_seconds
+        else:
+            length_in_sec = int(waveform.shape[1]/sample_rate_new)
+
+
+        mel_spec = self.pipeline(sample_rate_new, length_in_sec,waveform, goal_r=self.sample_rate)
 
         class_id = self.class_ids[index]
 
@@ -109,8 +115,10 @@ def create_generators_finetune_train(train_df,test_df):
     train_dataset = MyDataset_finetune_train(train_df,test_df,sample_rate=config.goal_sr_labeled, desired_length_in_seconds=config.desired_length_in_seconds)
     train_loader = DataLoader(train_dataset, batch_size = config.batch_size, shuffle=True, num_workers=0 ,drop_last=False)
 
+
+    ############################ACHTUNG BATCCHSIZE 1 ###############
     test_dataset = MyDataset_finetune_train(train_df,test_df,train=False, desired_length_in_seconds=config.desired_length_in_seconds)
-    test_loader = DataLoader(test_dataset, batch_size = config.batch_size, shuffle=True, num_workers=0 ,drop_last=False)
+    test_loader = DataLoader(test_dataset, batch_size = 1, shuffle=True, num_workers=0 ,drop_last=False)
     
     return train_loader, test_loader
 

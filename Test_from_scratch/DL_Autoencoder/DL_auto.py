@@ -17,6 +17,9 @@ root = 'G:/Dokumente/MAData/Unlabeled_all/'
 #root = 'G:/Dokumente/MAData/Unlabeled_klein/'
 #root = './data/ESC50/ESC-50-master/audio/'
 
+#laBELED TEST
+#root = './data/labeled_ADSMI/labeled_data_2013-535/'
+
 filenames = os.listdir(root)
 
 
