@@ -6,12 +6,14 @@ import torchaudio.transforms as T
 import torchvision.models as models
 import torchaudio
 import os
-
 import random
 import torch.nn as nn
 import numpy as np
-
 import config
+
+###########################################################################################################
+# Finetune Pipeline output 1 spectrograms	
+###########################################################################################################
 
 class MyPipeline(torch.nn.Module):
     def __init__(
@@ -87,7 +89,7 @@ class MyPipeline(torch.nn.Module):
             # Calculate the starting point for cropping
             start_idx = random.randint(0, waveform.shape[1] - desired_length)
             waveform = waveform[:, start_idx:start_idx+desired_length]
-            #print("Post crop/pad waveform size:", waveform.size())
+
             return waveform
     
 
@@ -124,7 +126,9 @@ class MyPipeline(torch.nn.Module):
         return spec
     
 
-
+###########################################################################################################
+# Pretrain Pipeline output 1 spectrograms	
+###########################################################################################################
 
 class MyPipelinePreTrain(torch.nn.Module):
     def __init__(
@@ -256,6 +260,10 @@ class MyPipelinePreTrain(torch.nn.Module):
 
         return spec
 
+
+###########################################################################################################
+# Pretrain Pipeline output 2 spectrograms	
+###########################################################################################################
 class MyPipelinePreTrain_2(torch.nn.Module):
     def __init__(
         self,
@@ -310,7 +318,7 @@ class MyPipelinePreTrain_2(torch.nn.Module):
             w2 = self.pad_waveform(waveform2, padding_needed)
         else:
             # Cropping if current length is longer than desired
-            max_shift_samples = int(sample_rate * config.max_sec_shift)  # Maximum shift of 0.4 seconds in samples
+            max_shift_samples = int(sample_rate * config.max_sec_shift)  # Maximum shift 
 
             start_idx_1 = random.randint(0, max(0, current_length - desired_length))
             start_idx_2 = min(max(0, start_idx_1 + random.randint(-max_shift_samples, max_shift_samples)), current_length - desired_length)
@@ -406,7 +414,9 @@ class MyPipelinePreTrain_2(torch.nn.Module):
         return spec, spec2
     
 
-
+###########################################################################################################
+# Pretrain Autoencoder Pipeline output 2 spectrograms one unaugmented and one augmented
+###########################################################################################################
 
 class MyPipelinePreTrain_auto(torch.nn.Module):
     def __init__(

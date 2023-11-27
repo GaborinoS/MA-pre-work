@@ -50,7 +50,7 @@ channels = 3
 #pipeline
 desired_length_in_seconds = 15
 
-max_sec_shift = 0.7
+max_sec_shift = 0.6
 val_sound_length = 20
 goal_sr_labeled = 32000
 goal_sr_unlabeled = 32000
