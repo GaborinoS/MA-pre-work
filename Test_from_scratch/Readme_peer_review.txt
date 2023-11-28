@@ -63,6 +63,75 @@ Pipleines:
                 Wenn kürzer als parameter "desired_length" wird der rest mit null aufgefüllt und zufällig links, mittig oder rechts abgebildet
                 Wenn länger wird zufälligein teil ausgeschnitten mit der länge "desired_length"
             erstelle mel spectrogramm aus waveform
-            augumentation
+            augumentation auf spectrogram
         Output:
             1.Melspec
+
+
+    MypipelinePretrain:
+        Wichtige Parameter:
+            - länge in Sekunden der Audio Datei (Azfrgund unterschiedliche Längen, da es für das Batching gleich lang serin muss)
+            - Train ein oder aus: (auswirkungen auf Länge und masking)
+            - Frequenz und Time Mask größe
+        Augumentation:
+            - Time masking
+            - Freq Masking
+            - Time Shift
+            - Vol perturbation
+            - additive noise
+        Vorgang:
+            load wav file 
+            resample wenn nötig
+            random crop or pad: 
+                Wenn kürzer als parameter "desired_length" wird der rest mit null aufgefüllt und zufällig links, mittig oder rechts abgebildet
+                Wenn länger wird zufälligein teil ausgeschnitten mit der länge "desired_length"
+            augumentation auf waveform
+            erstelle mel spectrogramm aus waveform
+            augumentation auf spectrogram
+        Output:
+            1.Melspec
+
+
+    MypipelinePretrain_2:
+        Wichtige Parameter:
+            - länge in Sekunden der Audio Datei (Azfrgund unterschiedliche Längen, da es für das Batching gleich lang serin muss)
+            - Train ein oder aus: (auswirkungen auf Länge und masking)
+            - Frequenz und Time Mask größe
+            - maximale Verschiebung der Zeit Achse (Eine Waveform wird mit underschiedlichen Augumetations bearbeitet (Positive und Anchor Paar). Dabei wird auch die Zeichachse um maximal diesen wert in sekunden verschoben )
+        Augumentation:
+            - Time masking
+            - Freq Masking
+            - Time Shift
+            - Vol perturbation
+            - additive noise
+        Vorgang:
+            load wav file 
+            resample wenn nötig
+            random crop or pad: 
+                Wenn kürzer als parameter "desired_length" wird der rest mit null aufgefüllt und zufällig links, mittig oder rechts abgebildet
+                Wenn länger wird zufälligein teil ausgeschnitten mit der länge "desired_length"
+            2 x augumentation auf waveform die selbe Waveform
+            erstelle mel spectrogramm aus waveforms
+            2 x augumentation auf spectrogram
+        Output:
+            2 x Mel Spectrogram (Anchor and Positive)
+
+
+    MypipelinePretrain_Auto:
+        Wichtige Parameter:
+            - länge in Sekunden der Audio Datei (Aufrgund unterschiedliche Längen, da es für das Batching gleich lang serin muss)
+            - Train ein oder aus: (auswirkungen auf Länge und masking)
+            - Frequenz und Time Mask größe
+        Augumentation:
+            - Time masking
+            - Freq Masking
+        Vorgang:
+            load wav file 
+            resample wenn nötig
+            random crop or pad: 
+                Wenn kürzer als parameter "desired_length" wird der rest mit null aufgefüllt und zufällig links, mittig oder rechts abgebildet
+                Wenn länger wird zufälligein teil ausgeschnitten mit der länge "desired_length"
+            erstelle mel spectrogramm aus waveforms
+            1 x augumentation auf spectrogram
+        Output:
+            1 x Masked Mel Spectrogram und 1 x ursprung Mel Spectrogram
