@@ -162,9 +162,9 @@ class MyPipelinePreTrain(torch.nn.Module):
         self.amplitude = T.AmplitudeToDB().to(self.device)
         self.time_stretch = T.TimeStretch().to(self.device)
 
-        
-        self.additive_noise = T.Vol(1.1).to(self.device)  # Increase volume by 10% (for additive noise)
-        self.volume_perturbation = T.Vol(0.9).to(self.device)  # Decrease volume by 10%
+        self.additive_noise = T.Vol(random.uniform(1,1.1)).to(self.device)  # Increase volume by 10% (for additive noise)
+        self.volume_perturbation = T.Vol(random.uniform(0.95,1)).to(self.device)  # Decrease volume by 10%
+
 
         self.spec_aug = torch.nn.Sequential( 
             T.FrequencyMasking(freq_mask_param=config.freq_mask_param).to(self.device),#10
@@ -172,37 +172,25 @@ class MyPipelinePreTrain(torch.nn.Module):
             #T.TimeStretch( random.uniform(0.95,1.05),fixed_rate=True).to(self.device)
         )
 
-    def random_crop_or_pad(self, waveform: torch.Tensor, sample_rate, desired_length_in_seconds=5) -> torch.Tensor:
-        """
-        Randomly crops the waveform to the desired length in seconds.
-        If the waveform is shorter than the desired length, it will be padded with zeros.
-        """
+    def random_crop_or_pad(self, waveform: torch.Tensor, sample_rate, desired_length_in_seconds=5) -> (torch.Tensor, torch.Tensor):
         desired_length = desired_length_in_seconds * sample_rate
         current_length = waveform.shape[1]
+        waveform2 = waveform.clone()
 
-        # If the waveform is shorter than desired, pad it with zeros
-        side = random.randint(0,2)
-
+        # Padding if current length is shorter than desired
         if current_length < desired_length:
-            if side == 0:
-                padding_needed = desired_length - current_length
-                left_pad = padding_needed // 2
-                right_pad = padding_needed - left_pad
-                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-            elif side == 1:
-                padding_needed = desired_length - current_length
-                left_pad = padding_needed
-                right_pad = 0
-                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-            else:
-                padding_needed = desired_length - current_length
-                left_pad = 0
-                right_pad = padding_needed
-                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-        
-        # Calculate the starting point for cropping
-        start_idx = random.randint(0, waveform.shape[1] - desired_length)
-        return waveform[:, start_idx:start_idx+desired_length]
+            padding_needed = desired_length - current_length
+            w1 = self.pad_waveform(waveform, padding_needed)
+
+        else:
+            start_idx_1 = random.randint(0, max(0, current_length - desired_length))
+            w1 = waveform[:, start_idx_1:start_idx_1 + desired_length]
+        return w1
+
+    def pad_waveform(self, waveform, padding_needed):
+        left_pad = random.randint(0, padding_needed)
+        right_pad = padding_needed - left_pad
+        return torch.nn.functional.pad(waveform, (left_pad, right_pad))
     
     def forward(self,sr, waveform: torch.Tensor,goal_r=50000) -> torch.Tensor:
         
@@ -298,13 +286,14 @@ class MyPipelinePreTrain_2(torch.nn.Module):
 
         
         self.additive_noise = T.Vol(random.uniform(1,1.1)).to(self.device)  # Increase volume by 10% (for additive noise)
-        self.volume_perturbation = T.Vol(random.uniform(0.9,1)).to(self.device)  # Decrease volume by 10%
+        self.volume_perturbation = T.Vol(random.uniform(0.95,1)).to(self.device)  # Decrease volume by 10%
 
         self.spec_aug = torch.nn.Sequential( 
             T.FrequencyMasking(freq_mask_param=config.freq_mask_param).to(self.device),#10
             T.TimeMasking(time_mask_param=config.time_mask_param).to(self.device),#90
             #T.TimeStretch( random.uniform(0.95,1.05),fixed_rate=True).to(self.device)
         )
+
 
     def random_crop_or_pad(self, waveform: torch.Tensor, sample_rate, desired_length_in_seconds=5) -> (torch.Tensor, torch.Tensor):
         desired_length = desired_length_in_seconds * sample_rate
@@ -351,7 +340,7 @@ class MyPipelinePreTrain_2(torch.nn.Module):
                 waveform = waveform + self.additive_noise(noise)
 
             # Volume perturbation
-            if random.random() < 0.5:
+            if random.random() < 0.4:
                 waveform = self.volume_perturbation(waveform)
 
             '''
@@ -459,38 +448,28 @@ class MyPipelinePreTrain_auto(torch.nn.Module):
             T.TimeMasking(time_mask_param=config.time_mask_param).to(self.device),#90
             #T.TimeStretch( random.uniform(0.95,1.05),fixed_rate=True).to(self.device)
         )
+        self.freq_mask = T.FrequencyMasking(freq_mask_param=config.freq_mask_param/2).to(self.device)
+        self.time_mask = T.TimeMasking(time_mask_param=config.time_mask_param/2).to(self.device)
 
-    def random_crop_or_pad(self, waveform: torch.Tensor, sample_rate, desired_length_in_seconds=5) -> torch.Tensor:
-        """
-        Randomly crops the waveform to the desired length in seconds.
-        If the waveform is shorter than the desired length, it will be padded with zeros.
-        """
+    def random_crop_or_pad(self, waveform: torch.Tensor, sample_rate, desired_length_in_seconds=5) -> (torch.Tensor, torch.Tensor):
         desired_length = desired_length_in_seconds * sample_rate
         current_length = waveform.shape[1]
+        waveform2 = waveform.clone()
 
-        # If the waveform is shorter than desired, pad it with zeros
-        side = random.randint(0,2)
-
+        # Padding if current length is shorter than desired
         if current_length < desired_length:
-            if side == 0:
-                padding_needed = desired_length - current_length
-                left_pad = padding_needed // 2
-                right_pad = padding_needed - left_pad
-                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-            elif side == 1:
-                padding_needed = desired_length - current_length
-                left_pad = padding_needed
-                right_pad = 0
-                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-            else:
-                padding_needed = desired_length - current_length
-                left_pad = 0
-                right_pad = padding_needed
-                waveform = torch.nn.functional.pad(waveform, (left_pad, right_pad))
-        
-        # Calculate the starting point for cropping
-        start_idx = random.randint(0, waveform.shape[1] - desired_length)
-        return waveform[:, start_idx:start_idx+desired_length]
+            padding_needed = desired_length - current_length
+            w1 = self.pad_waveform(waveform, padding_needed)
+
+        else:
+            start_idx_1 = random.randint(0, max(0, current_length - desired_length))
+            w1 = waveform[:, start_idx_1:start_idx_1 + desired_length]
+        return w1
+
+    def pad_waveform(self, waveform, padding_needed):
+        left_pad = random.randint(0, padding_needed)
+        right_pad = padding_needed - left_pad
+        return torch.nn.functional.pad(waveform, (left_pad, right_pad))
 
 
     
@@ -513,7 +492,10 @@ class MyPipelinePreTrain_auto(torch.nn.Module):
         # Apply SpecAugment
         if self.train:
             spec = self.spec_aug(spec)
-            #spec2 = self.spec_aug(spec2)
+            if random.random() < 0.5:
+                spec = self.freq_mask(spec)
+            if random.random() < 0.5:
+                spec = self.time_mask(spec)
 
         # Convert to decibel
         spec = self.amplitude(spec).squeeze(0)

@@ -31,14 +31,14 @@ if US8K:
 if ADSMI:
 	ADSMI_train_folds = [1, 2, 3, 4, 5, 6, 7,8,9]
 	ADSMI_test_fold = [10]
-	lr = 1e-4
+	lr = 0.0001
 	class_numbers = 4
 
 temperature = 0.07
 freq_mask_param = 7 #7#10 #Auto=40
 time_mask_param = 50 #50#90 #Auto = 100
 
-epochs = 200
+epochs = 250
 finetune_epochs = 120
 patience = 15
 batch_size = 32
