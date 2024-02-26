@@ -23,7 +23,7 @@ filenames = os.listdir(root)
 
 
 n = len(filenames)
-f = len(config.ADSMI_train_folds) + 1 # replace with your desired value of f
+f = len(config.ADSMI_train_folds) + 1 
 
 # Compute quotient and remainder
 q, r = divmod(n, f)
