@@ -35,8 +35,8 @@ if ADSMI:
 	class_numbers = 4
 
 temperature = 0.07
-freq_mask_param = 0#7 #7#10 #Auto=40
-time_mask_param = 0#50 #50#90 #Auto = 100
+freq_mask_param = 7#7 #7#10 #Auto=40
+time_mask_param = 50#50 #50#90 #Auto = 100
 
 epochs = 250
 finetune_epochs = 120
