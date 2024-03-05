@@ -41,7 +41,7 @@ time_mask_param = 50#50 #50#90 #Auto = 100
 epochs = 250
 finetune_epochs = 120
 patience = 15
-batch_size = 32
+batch_size = 16
 
 
 
